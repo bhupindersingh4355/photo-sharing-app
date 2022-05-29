@@ -11,6 +11,8 @@ const rtsIndex = require('./routes/index.router');
 
 var app = express();
 
+const path = require('path');
+
 // middleware
 app.use(bodyParser.json());
 app.use(cors());
@@ -28,6 +30,8 @@ app.use((err, req, res, next) => {
         console.log(err);
     }
 });
+
+app.use('/public', express.static(path.join(__dirname, '/public')))
 
 // start server
 app.listen(process.env.PORT, () => console.log(`Server started at port : ${process.env.PORT}`));
