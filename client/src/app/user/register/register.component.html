@@ -2,7 +2,7 @@
     <img src="/assets/images/users.png" id="icon" alt="User Icon" />
   </div>
  
-  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+  <form [formGroup]="registerForm"  (ngSubmit)="onSubmit()">
     <input type="text" formControlName="fullName"  placeholder="Full Name"  [ngClass]="{'invalid-textbox' :submitted && f['fullName']['errors']}">
     <div *ngIf="submitted && f['fullName']['errors']">
       <label class="validation-message">This field is required.</label>
