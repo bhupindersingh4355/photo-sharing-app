@@ -38,7 +38,7 @@ export class UserService  {
     return this.http.post<User>(environment.apiBaseUrl+'/register', user, this.noAuthHeader);
   }
 
-  login(authCredentials: JSON) {
+  login(authCredentials: any) {
     return this.http.post<User>(environment.apiBaseUrl + '/authenticate', authCredentials, this.noAuthHeader);
   }
 

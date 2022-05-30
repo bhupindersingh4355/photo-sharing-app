@@ -6,6 +6,7 @@ import { HttpEventType, HttpResponse } from '@angular/common/http';
 import { FileUploadService } from '../service/file-upload.service';
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import * as moment from 'moment';
+import { environment } from '../../environments/environment';
 
 
 @Component({
@@ -17,9 +18,8 @@ export class HomeComponent implements OnInit {
   moment: any = moment;
   userDetails: any;
   selectedFiles?: FileList;
-  progressInfos: any[] = [];
-  message: string[] = [];
-  previews: string[] = [];
+  progressInfo: any;
+  preview: any;
   photos: any = [];
   imageInViewModal: any;
   imageInfos?: Observable<any>;
@@ -31,6 +31,7 @@ export class HomeComponent implements OnInit {
     description: new FormControl('', [Validators.required]),
     photo: new FormControl('', [Validators.required])
   });
+  imageBaseUrl = environment.imageBaseUrl;
 
   constructor(private userService: UserService, private router: Router, private uploadService: FileUploadService) { }
 
@@ -64,46 +65,39 @@ export class HomeComponent implements OnInit {
 
     // showing selected files
     selectFiles(event: any): void {
-      this.message = [];
-      this.progressInfos = [];
+      this.progressInfo = {};
       this.selectedFiles = event.target.files;
-      this.previews = [];
+      this.preview = '';
       if (this.selectedFiles && this.selectedFiles[0]) {
         const numberOfFiles = this.selectedFiles.length;
         for (let i = 0; i < numberOfFiles; i++) {
           const reader = new FileReader();
           reader.onload = (e: any) => {
-            console.log(e.target.result);
-            this.previews.push(e.target.result);
+            this.preview = e.target.result;
           };
           reader.readAsDataURL(this.selectedFiles[i]);
         }
       }
-      console.log(this.previews);
     }
 
     // call upload file function
     uploadFiles(title: string, description: string, userId: string): void {
-      this.message = [];
       if (this.selectedFiles) {
         for (let i = 0; i < this.selectedFiles.length; i++) {
-          this.upload(i, this.selectedFiles[i], title, description, userId);
+          this.savePhoto(this.selectedFiles[i], title, description, userId);
         }
       }
     }
 
     // save file in database
-    upload(idx: number, file: File, title: string, description: string, userId: string): void {
-      this.progressInfos[idx] = { value: 0, fileName: file.name };
+    savePhoto(file: File, title: string, description: string, userId: string): void {
+      this.progressInfo = { value: 0, fileName: file.name };
       if (file) {
         this.uploadService.upload(file, title, description, userId).subscribe(
           (event: any) => {
             if (event.type === HttpEventType.UploadProgress) {
-              this.progressInfos[idx].value = Math.round(100 * event.loaded / event.total);
+              this.progressInfo.value = Math.round(100 * event.loaded / event.total);
             } else if (event instanceof HttpResponse) {
-              const msg = 'Uploaded the file successfully: ' + file.name;
-              this.message.push(msg);
-              
               setTimeout(() => {
                 // get all photos
                 this.getPhotos();
@@ -114,16 +108,14 @@ export class HomeComponent implements OnInit {
                 // reset add photo form fields
                 this.photoAddForm.reset();
                 this.submitted = false;
-                this.progressInfos = [];
-                this.previews = [];
+                this.progressInfo = {};
+                this.preview = {};
               }, 500);
               
             }
           },
           (err: any) => {
-            this.progressInfos[idx].value = 0;
-            const msg = 'Could not upload the file: ' + file.name;
-            this.message.push(msg);
+            this.progressInfo.value = 0;
           });
       }
     }
@@ -148,26 +140,26 @@ export class HomeComponent implements OnInit {
     }
 
     // get photo upload time
-    dateDiff(date2: any) {
+    dateDiff(photoDate: any) {
       // get current date
-      const date1 = new Date().toISOString();
-      const momentDate1 = moment(date1);
-      const momentDate2 = moment(date2);
-      const diff = momentDate1.diff(momentDate2, 'minutes');
+      const currentDate = new Date().toISOString();
+      const currentDateMoment = moment(currentDate);
+      const photoDateMoment = moment(photoDate);
+      const differenceInMinutes = currentDateMoment.diff(photoDateMoment, 'minutes');
       
       // if photo uploaded more tha hour ago
-      if (diff > 60)
+      if (differenceInMinutes > 60)
       {
-        return momentDate1.diff(momentDate2, 'hours') + ' hours ago';
+        return currentDateMoment.diff(photoDateMoment, 'hours') + ' hours ago';
       }
 
       // if photo uploaded less than minute ago
-      if (diff < 1)
+      if (differenceInMinutes < 1)
       {
-        return momentDate1.diff(momentDate2, 'seconds') + ' seconds ago';
+        return currentDateMoment.diff(photoDateMoment, 'seconds') + ' seconds ago';
       }
 
-      return diff + ' minutes ago';
+      return differenceInMinutes + ' minutes ago';
     }
 
     // delete photo from database

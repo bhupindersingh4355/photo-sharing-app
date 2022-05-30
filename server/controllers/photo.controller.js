@@ -7,7 +7,7 @@ module.exports.create = (req, res, next) => {
     if(!req.file) {
         return res.status(500).send({ message: 'Upload fail'});
     }
-    req.body.photo = '/images/' + req.file.filename;
+    req.body.photo = '/shared/' + req.file.filename;
     var photo = new Photo();
     photo.title = req.body.title;
     photo.description = req.body.description;
