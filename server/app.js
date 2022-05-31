@@ -31,7 +31,8 @@ app.use((err, req, res, next) => {
     }
 });
 
-app.use('/public', express.static(path.join(__dirname, '/public')))
+app.use('/uploads', express.static(path.join(__dirname, '/uploads')))
 
 // start server
 app.listen(process.env.PORT, () => console.log(`Server started at port : ${process.env.PORT}`));
+module.exports = app;

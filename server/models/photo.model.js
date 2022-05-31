@@ -26,4 +26,4 @@ var photoSchema = new mongoose.Schema({
     saltSecret: String
 });
 
-mongoose.model('Photo', photoSchema);
+module.exports = mongoose.model('Photo', photoSchema);

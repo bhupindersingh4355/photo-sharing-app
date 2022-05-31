@@ -17,7 +17,6 @@ import { UserService } from './service/user.service';
 //other
 import { AuthGuard } from './auth/auth.guard';
 import { AuthInterceptor } from './auth/auth.interceptor';
-import { HeaderComponent } from './header/header.component';
 import { HomeComponent } from './home/home.component';
 
 @NgModule({
@@ -27,7 +26,6 @@ import { HomeComponent } from './home/home.component';
     LoginComponent,
     RegisterComponent,
     UserProfileComponent,
-    HeaderComponent,
     HomeComponent,
   ],
   imports: [
