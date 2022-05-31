@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const _ = require('lodash');
-const Photo = mongoose.model('Photo');
+const Photo = require('../models/photo.model');
 
 // Create photo record
 module.exports.create = (req, res, next) => {
@@ -15,7 +15,6 @@ module.exports.create = (req, res, next) => {
     photo.photo = req.body.photo;
     photo.save((err, doc) => {
         if (!err)
-            //res.send(doc);
             res.status(200).json({ status: true });
         else {
             return next(err);
