@@ -7,6 +7,8 @@ app.use("/api", routes);
 const mongoose = require("mongoose");
 const supertest = require("supertest");
 const fs = require('fs');
+const path = require('path');
+var imagePath = path.join(path.resolve(__dirname, '..'), '/uploads/shared/');
 
 beforeEach((done) => {
     mongoose.connect("mongodb://localhost:27017/MEANStackDB",
@@ -45,7 +47,7 @@ test("POST /api/posts", async () => {
         .field('user_id', data.user_id)
         .field('title', data.title)
         .field('description', data.description)
-        .attach('file', fs.readFileSync(`/Users/gourav_g/Downloads/mean/photo-sharing-app/server/uploads/shared/photo-1653821713030.png`), 'tests/photo-1653821713030.png')
+        .attach('file', fs.readFileSync(`${imagePath}photo-1653821713030.png`), 'tests/photo-1653821713030.png')
         .expect(200)
         .then(async (response) => {
             // Check the response

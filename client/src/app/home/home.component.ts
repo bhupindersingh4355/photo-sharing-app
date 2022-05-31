@@ -70,6 +70,7 @@ export class HomeComponent implements OnInit {
       this.preview = '';
       if (this.selectedFiles && this.selectedFiles[0]) {
         const numberOfFiles = this.selectedFiles.length;
+        console.log(numberOfFiles);
         for (let i = 0; i < numberOfFiles; i++) {
           const reader = new FileReader();
           reader.onload = (e: any) => {
@@ -78,6 +79,13 @@ export class HomeComponent implements OnInit {
           reader.readAsDataURL(this.selectedFiles[i]);
         }
       }
+      console.log(this.preview);
+    }
+
+    // remove selected files
+    removeFile(fileUpload: any): void { 
+      fileUpload.value = '';
+      this.preview = null;
     }
 
     // call upload file function

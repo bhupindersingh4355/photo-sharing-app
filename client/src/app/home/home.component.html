@@ -104,13 +104,13 @@
               </div>
             </div>
             <div class="mb-3">
-              <input type="file" formControlName="photo" accept="image/*" (change)="selectFiles($event)" />
+              <input #fileUpload type="file" id="fileUpload" class="form-control" formControlName="photo" accept="image/*" (change)="selectFiles($event)" />
               <div *ngIf="submitted && f['photo']['errors']">
                 <label *ngIf="f['photo']['errors']['required']" class="validation-message">This field is
                   required.</label>
               </div>
               <div class="mt-2 uploaded-images">
-                <div class="px-2">
+                <div>
                   <img *ngIf="preview" [src]="preview" alt="image" class="preview" width="200px">
                   <div *ngIf="submitted" class="progress-info">
                     <span>{{ progressInfo?.fileName }}</span>
@@ -121,6 +121,9 @@
                         {{ progressInfo?.value }}%
                       </div>
                     </div>
+                  </div>
+                  <div class="d-grid mt-2">
+                    <button *ngIf="preview" type="button" class="btn btn-danger btn-sm" (click)="removeFile(fileUpload)">Remove</button>
                   </div>
                 </div>
               </div>
