@@ -7,7 +7,6 @@ var storage = multer.diskStorage({
       cb(null, './uploads/shared');
     },
     filename: (req, file, cb) => {
-      console.log(file);
       var filetype = '';
       if(file.mimetype === 'image/png') {
         filetype = 'png';
