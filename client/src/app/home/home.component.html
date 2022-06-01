@@ -1,6 +1,6 @@
 <main role="main">
   <div class="card border-0">
-    <h3 class="card-header" *ngIf="userDetails">Welcome, {{userDetails.fullName}}</h3>
+    <h3 class="card-header" *ngIf="userDetails">Welcome, <a [routerLink]="['/user-profile']">{{userDetails.fullName}}</a></h3>
   </div>
   <section class="jumbotron text-center">
 
@@ -36,7 +36,7 @@
               <div class="d-flex justify-content-between align-items-center">
                 <div class="btn-group">
                   <button type="button" class="btn btn-sm btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#photoViewModal" (click)="this.imageInViewModal = imageBaseUrl + photo.photo">View</button>
-                  <button *ngIf="userDetails && photo.user_id == userDetails.id" type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" (click)="this.deletableId = photo._id">Delete</button>
+                  <button *ngIf="userDetails && photo.user_id == userDetails._id" type="button" class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" (click)="this.deletableId = photo._id">Delete</button>
                 </div>
                 <small class="text-muted" [innerHTML]="dateDiff(photo.create_at)"></small>
               </div>
@@ -68,7 +68,7 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-body image-view" style="background: url({{imageInViewModal}});">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
       </div>
     </div>

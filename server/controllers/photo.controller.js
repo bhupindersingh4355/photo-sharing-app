@@ -35,7 +35,7 @@ module.exports.get = (req, res, next) => {
     ).sort({create_at: -1});
 }
 
-module.exports.delete = (req, res, next) =>{
+module.exports.delete = (req, res, next) => {
     Photo.deleteOne({ _id: req.params.id},
         (err, data) => {
             if (!data)

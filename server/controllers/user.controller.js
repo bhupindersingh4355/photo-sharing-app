@@ -37,13 +37,31 @@ module.exports.authenticate = (req, res, next) => {
     })(req, res, next);
 }
 
-module.exports.userProfile = (req, res, next) =>{
+module.exports.userProfile = (req, res, next) => {
     User.findOne({ _id: req._id },
         (err, user) => {
             if (!user)
                 return res.status(404).json({ status: false, message: 'User record not found.' });
             else
-                return res.status(200).json({ status: true, user : _.pick(user,['id','fullName','email']) });
+                return res.status(200).json({ status: true, user : _.pick(user,['_id','fullName','email', 'profilePhoto']) });
         }
     );
+}
+
+module.exports.userProfileUpdate = (req, res, next) => {
+    let data = {fullName: req.body.fullNam};
+    
+    if (req?.file?.hasOwnProperty('filename'))
+    {
+        data['profilePhoto'] = '/profile-photos/' + req.file.filename;
+    }
+
+    User.updateOne({_id: req.body.id},
+        {$set: data},
+        (err, response) => {
+        if (!response)
+            return res.status(404).json({ status: false, message: 'Something went wrong' });
+        else
+            return res.status(200).json({ status: true, message: 'User Profile updated'});
+    });
 }

@@ -16,8 +16,7 @@ var photoSchema = new mongoose.Schema({
     },
     photo: {
         type: String,
-        required: 'Password can\'t be empty',
-        minlength: [6, 'Password must be atleast 6 character long']
+        required: 'Photo can\'t be empty'
     },
     create_at: {
         type: Date,

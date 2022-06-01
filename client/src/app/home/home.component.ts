@@ -144,7 +144,7 @@ export class HomeComponent implements OnInit {
     this.uploadFiles(
       this.photoAddForm.value.title,
       this.photoAddForm.value.description,
-      this.userDetails.id
+      this.userDetails._id
     );
   }
 
